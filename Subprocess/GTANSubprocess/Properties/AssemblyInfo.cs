@@ -5,5 +5,7 @@
 
 using System.Reflection;
 
-[assembly: AssemblyVersion("0.1.445.1")]
-[assembly: AssemblyFileVersion("0.1.445.1")]
+[assembly: AssemblyVersion("0.1.1056.262")]
+[assembly: AssemblyFileVersion("0.1.1056.262")]
+[assembly: AssemblyTitle("GTANetwork Reborn")]
+

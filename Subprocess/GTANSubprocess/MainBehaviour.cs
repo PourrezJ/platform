@@ -6,14 +6,10 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using Binarysharp.MemoryManagement;
-using Binarysharp.MemoryManagement.Patterns;
 using GTANetworkShared;
 using Microsoft.Win32;
-using Ionic.Zip;
-using SigScan;
 
-namespace GTANetwork
+namespace ResurrectionMP_Launcher
 {
     public class MainBehaviour : LauncherSettings.ISubprocessBehaviour
     {
@@ -50,9 +46,26 @@ namespace GTANetwork
                 7. Restore old settings on GTA5.exe termination.
                 8. Terminate
             */
+            
+            #region Registry checking (Obsolete)
+
+            var dictPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Rockstar Games\Grand Theft Auto V";
+            var GTANFolder = (string)Registry.GetValue(dictPath, "ResurrectionMPInstallDir", null);
+            if (GTANFolder != AppDomain.CurrentDomain.BaseDirectory)
+            {
+                try
+                {
+                    Registry.SetValue(dictPath, "ResurrectionMPInstallDir", AppDomain.CurrentDomain.BaseDirectory);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    MessageBox.Show("Insufficient permissions, Please run as Admin to avoid permission issues.(6)", "Unauthorized access");
+                    return;
+                }
+            }
+            #endregion
 
             var playerSetings = new PlayerSettings();
-
 
             #region Create settings.xml if it does not exist
             //MessageBox.Show(Directory.GetParent(Directory.GetCurrentDirectory()).FullName); //shows a path error but returns the correct listing
@@ -83,7 +96,7 @@ namespace GTANetwork
             #region Check if GTA5 or GTAVLauncher is running
             if (Process.GetProcessesByName("GTA5").Any() || Process.GetProcessesByName("GTAVLauncher").Any())
             {
-                MessageBox.Show(splashScreen.SplashScreen, "GTA5 or the GTAVLauncher is already running. Please close them before starting GTA Network.");
+                MessageBox.Show(splashScreen.SplashScreen, "GTA5 or the ResuMPLauncher is already running. Please close them before starting Resu Multiplayer.");
                 return;
             }
             #endregion
@@ -91,7 +104,7 @@ namespace GTANetwork
             #region Check for dependencies
             if (!Environment.Is64BitOperatingSystem)
             {
-               MessageBox.Show(splashScreen.SplashScreen, "GTA Network does not work on 32bit machines.", "Incompatible");
+               MessageBox.Show(splashScreen.SplashScreen, "ResurrectionMP does not work on 32bit machines.", "Incompatible");
                 return;
             }
 
@@ -178,7 +191,7 @@ namespace GTANetwork
 
             #endregion
 
-            #region Check for Client Dependencies
+            /*#region Check for Client Dependencies
 
             var shvVersion = new ParseableVersion(0, 0, 0, 0);
             if (File.Exists(GTANFolder + "bin" + "\\" + "depsver.txt"))
@@ -227,9 +240,9 @@ namespace GTANetwork
                     File.AppendAllText(GTANFolder + "logs" + "\\" + "launcher.log", "MASTER SERVER LOOKUP EXCEPTION AT " + DateTime.Now + "\n\n" + ex);
                 }
             }
-            #endregion
+            #endregion*/
 
-            #region Check for new client version
+            /*#region Check for new client version
 
             ParseableVersion fileVersion = new ParseableVersion(0, 0, 0, 0);
             if (File.Exists(GTANFolder + "bin" + "\\" + "scripts" + "\\" + "GTANetwork.dll"))
@@ -278,7 +291,7 @@ namespace GTANetwork
                     File.AppendAllText(GTANFolder + "logs" + "\\" + "launcher.log", "MASTER SERVER LOOKUP EXCEPTION AT " + DateTime.Now + "\n\n" + ex);
                 }
             }
-            #endregion
+            #endregion*/
 
             splashScreen.SetPercent(35);
 
@@ -286,8 +299,8 @@ namespace GTANetwork
             if (string.IsNullOrWhiteSpace(settings.GamePath) || !File.Exists(settings.GamePath + "\\" + "GTA5.exe"))
             {
                 var diag = new OpenFileDialog();
-                diag.Filter = "GTA5 Executable|GTA5.exe";
-                diag.FileName = "GTA5.exe";
+                /*diag.Filter = "GTA5 Executable|GTA5.exe";
+                diag.FileName = "GTA5.exe";*/
                 diag.DefaultExt = ".exe";
                 diag.RestoreDirectory = true;
                 diag.CheckFileExists = true;
@@ -313,7 +326,8 @@ namespace GTANetwork
             }
             #endregion
 
-            #region Check GTA5 version
+            //TODO CHECK VERSION
+            /*#region Check GTA5 version
             FileVersionInfo myGTAVersionInfo = FileVersionInfo.GetVersionInfo(settings.GamePath + "\\" + "GTA5.exe");
 
             splashScreen.SetPercent(40);
@@ -345,28 +359,7 @@ namespace GTANetwork
                     File.AppendAllText(GTANFolder + "logs" + "\\" + "launcher.log", "MASTER SERVER LOOKUP EXCEPTION AT " + DateTime.Now + "\n\n" + ex);
                 }
             }
-            #endregion
-
-            #region Registry checking (Obsolete)
-            //splashScreen.SetPercent(35);
-
-            //#region Check GTAN Folder Registry entry
-            //var dictPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Rockstar Games\Grand Theft Auto V";
-            //var GTANFolder = (string)Registry.GetValue(dictPath, "GTANetworkInstallDir", null);
-            //if (GTANFolder != AppDomain.CurrentDomain.BaseDirectory)
-            //{
-            //    try
-            //    {
-            //        Registry.SetValue(dictPath, "GTANetworkInstallDir", AppDomain.CurrentDomain.BaseDirectory);
-            //    }
-            //    catch (UnauthorizedAccessException)
-            //    {
-            //        MessageBox.Show(splashScreen.SplashScreen, "Insufficient permissions, Please run as Admin to avoid permission issues.(6)", "Unauthorized access");
-            //        return;
-            //    }
-            //}
-            //#endregion
-            #endregion
+            #endregion*/
 
             splashScreen.SetPercent(45);
 
@@ -393,17 +386,15 @@ namespace GTANetwork
 
                 //    MoveDirectory(settings.GamePath + "\\" + "scripts", settings.GamePath + "\\" + "Disabled" + "\\" + "scripts");
                 //}
-
+                /*
                 foreach (var file in Directory.GetFiles(settings.GamePath, "*.asi", SearchOption.TopDirectoryOnly))
                 {
                     if (!Directory.Exists(settings.GamePath + "\\" + "Disabled")) Directory.CreateDirectory(settings.GamePath + "\\" + "Disabled");
-
                     if (File.Exists(settings.GamePath + "\\" + "Disabled" + "\\" + Path.GetFileName(file))) File.Delete(settings.GamePath + "\\" + "Disabled" + "\\" + Path.GetFileName(file));
-
                     MoveFile(file, settings.GamePath + "\\" + "Disabled" + "\\" + Path.GetFileName(file));
                 }
-
-                string[] Files = { "ClearScript.dll", "ClearScriptV8-32.dll", "ClearScriptV8-64.dll", "EasyHook64.dll", "scripthookv.dll", "ScriptHookVDotNet.dll", "v8-ia32.dll", "dinput8.dll" };
+                
+                string[] Files = { "ClearScript.dll", "ClearScriptV8-32.dll", "ClearScriptV8-64.dll", "EasyHook64.dll", "scripthookv.dll", "ScriptHookVDotNet.dll", "ScriptHookVDotNet.asi", "v8-ia32.dll", "dinput8.dll" };
                 foreach (var file in Files)
                 {
                     if (!File.Exists(settings.GamePath + "\\" + file)) continue;
@@ -412,7 +403,7 @@ namespace GTANetwork
                     if (File.Exists(settings.GamePath + "\\" + "Disabled" + "\\" + file)) File.Delete(settings.GamePath + "\\" + "Disabled" + "\\" + file);
                     MoveFile(settings.GamePath + "\\" + file, settings.GamePath + "\\" + "Disabled" + "\\" + file);
                 }
-
+                */
                 foreach (var file in Directory.GetFiles(Profiles, "pc_settings.bin", SearchOption.AllDirectories))
                 {
                     if (!File.Exists((Path.GetDirectoryName(file) + "\\" + "SGTA50000.bak"))) continue;
@@ -583,7 +574,7 @@ namespace GTANetwork
             }
             #endregion
 
-            splashScreen.SetPercent(90);
+            splashScreen.SetPercent(100);
 
             #region Wait for the Game to launch
             Process gta5Process;
@@ -758,17 +749,18 @@ namespace GTANetwork
 
         public static void InjectOurselves(Process gta)
         {
-            Inject(gta, GTANFolder + "bin" + "\\" + "scripthookv.dll");
-            Inject(gta, GTANFolder + "bin" + "\\" + "ScriptHookVDotNet.dll");
-            Inject(gta, GTANFolder + "bin" + "\\" + "sharpdx_direct3d11_effects_x64.dll");
+            Inject(gta, GTANFolder + "bin" + "\\" + "Scripthookv.dll");
+            //Inject(gta, GTANFolder + "bin" + "\\" + "ScriptHookVDotNet.asi");
+            //Inject(gta, GTANFolder + "bin" + "\\" + "ScriptHookVDotNet3.dll");
+            //Inject(gta, GTANFolder + "bin" + "\\" + "sharpdx_direct3d11_effects_x64.dll");
             Inject(gta, GTANFolder + "bin" + "\\" + "dinput8.dll");
-            Inject(gta, GTANFolder + "bin" + "\\" + "v8-x64.dll");
-            
+            //Inject(gta, GTANFolder + "bin" + "\\" + "v8-x64.dll");
+
             foreach (var file in Directory.GetFiles(GTANFolder + "bin", "*.asi"))
             {
                 if (string.IsNullOrWhiteSpace(file)) continue;
 
-                if (Path.GetFileName(file).ToLower().StartsWith("scripthookv")) continue;
+                //if (Path.GetFileName(file).ToLower().StartsWith("scripthookv")) continue;
                 if (Path.GetFileName(file).ToLower().StartsWith("xmloader")) continue;
                 if (Path.GetFileName(file).ToLower().StartsWith("openiv")) continue;
 
@@ -781,9 +773,6 @@ namespace GTANetwork
                     // ignored
                 }
             }
-
-
-
         }
 
         public static void Inject(Process target, string path)

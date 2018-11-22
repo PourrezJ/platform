@@ -94,16 +94,15 @@ namespace GTA
 			path = Path.GetFullPath(path);
 
 			// Clear log
-            /*
-			string logPath = Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, ".log");
-
-			try
+            
+            string logPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..\\logs\\ScriptHookVDotNet.log");
+            try
 			{
 				File.WriteAllText(logPath, string.Empty);
 			}
 			catch
 			{
-			}*/
+			}
 
 			// Create AppDomain
 			var setup = new AppDomainSetup();
@@ -129,6 +128,7 @@ namespace GTA
 			{
                 try
                 {
+                    Log("[DEBUG]", "ERROR: Load with LOADFROM ", typeof(ScriptDomain).FullName);
                     var ourAssembly = Assembly.LoadFrom(typeof(ScriptDomain).Assembly.Location);
                     scriptdomain = (ScriptDomain)ourAssembly.CreateInstance(typeof(ScriptDomain).FullName);
                 }

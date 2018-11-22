@@ -3,8 +3,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
 
-namespace GTANetwork
+namespace ResurrectionMP_Launcher
 {
     public enum DllInjectionResult
     {
@@ -90,17 +91,25 @@ namespace GTANetwork
 
         public DllInjectionResult Inject(Process proc, string sDllPath)
         {
-            if (!File.Exists(sDllPath))
+            try
             {
-                return DllInjectionResult.DllNotFound;
-            }
+                if (!File.Exists(sDllPath))
+                {
+                    return DllInjectionResult.DllNotFound;
+                }
 
-            if (!bInject((uint)proc.Id, sDllPath))
+                if (!bInject((uint)proc.Id, sDllPath))
+                {
+                    return DllInjectionResult.InjectionFailed;
+                }
+
+                return DllInjectionResult.Success;
+            }
+            catch(Exception ex)
             {
+                MessageBox.Show(ex.ToString());
                 return DllInjectionResult.InjectionFailed;
             }
-
-            return DllInjectionResult.Success;
         }
 
         bool bInject(uint pToBeInjected, string sDllPath)

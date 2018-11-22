@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace GTANetwork
+namespace ResurrectionMP_Launcher
 {
     public class GameSettings
     {
