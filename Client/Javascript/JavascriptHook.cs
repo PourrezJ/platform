@@ -822,7 +822,7 @@ namespace GTANetwork.Javascript
                 cam.CamObj.PointAt(new Prop(ent.Value), offset.ToVector());
             }
         }
-
+        /*
         public void pointCameraAtEntityBone(GlobalCamera cam, LocalHandle ent, int bone, Vector3 offset)
         {
             cam.VectorPointing = null;
@@ -836,7 +836,7 @@ namespace GTANetwork.Javascript
                 cam.CamObj.PointAt(new Ped(ent.Value), bone, offset.ToVector());
             }
         }
-
+        */
         public void stopCameraPointing(GlobalCamera cam)
         {
             cam.VectorPointing = null;
@@ -861,7 +861,8 @@ namespace GTANetwork.Javascript
                 cam.CamObj.AttachTo(new Prop(ent.Value), offset.ToVector());
             }
         }
-
+        // Disabled no have the same into SHDN3
+        /*
         public void attachCameraToEntityBone(GlobalCamera cam, LocalHandle ent, int bone, Vector3 offset)
         {
             cam.EntityAttached = ent.Value;
@@ -872,7 +873,7 @@ namespace GTANetwork.Javascript
             {
                 cam.CamObj.AttachTo(new Ped(ent.Value), bone, offset.ToVector());
             }
-        }
+        }*/
 
         public void detachCamera(GlobalCamera cam)
         {
@@ -1519,7 +1520,7 @@ namespace GTANetwork.Javascript
         public void createParticleEffectOnPosition(string ptfxLibrary, string ptfxName, Vector3 position, Vector3 rotation, double scale)
         {
             Util.Util.LoadPtfxAsset(ptfxLibrary);
-            Function.Call(Hash._SET_PTFX_ASSET_NEXT_CALL, ptfxLibrary);
+            Function.Call(Hash._USE_PARTICLE_FX_ASSET_NEXT_CALL, ptfxLibrary);
             Function.Call((Hash) 0x25129531F77B9ED3, ptfxName, position.X, position.Y, position.Z, rotation.X,
                 rotation.Y, rotation.Z,
                 (float)scale, 0, 0, 0);
@@ -1528,7 +1529,7 @@ namespace GTANetwork.Javascript
         public void createParticleEffectOnEntity(string ptfxLibrary, string ptfxName, LocalHandle entity, Vector3 offset, Vector3 rotation, double scale, int boneIndex = -1)
         {
             Util.Util.LoadPtfxAsset(ptfxLibrary);
-            Function.Call(Hash._SET_PTFX_ASSET_NEXT_CALL, ptfxLibrary);
+            Function.Call(Hash._USE_PARTICLE_FX_ASSET_NEXT_CALL, ptfxLibrary);
 
             if (boneIndex <= 0)
             {
@@ -2122,7 +2123,7 @@ namespace GTANetwork.Javascript
 
         public float getVehicleMaxOccupants(int model)
         {
-            return Function.Call<int>(Hash._GET_VEHICLE_MODEL_MAX_NUMBER_OF_PASSENGERS, model);
+            return Function.Call<int>(Hash.GET_VEHICLE_MODEL_NUMBER_OF_SEATS, model);
         }
 
         public int getVehicleClass(int model)
@@ -2404,7 +2405,22 @@ namespace GTANetwork.Javascript
 
         public void givePlayerWeaponComponent(int weapon, int component)
         {
-            Game.Player.Character.Weapons[(GTA.WeaponHash)weapon].SetComponent((WeaponComponent) component, true);
+            Game.Player.Character.Weapons[(GTA.WeaponHash)weapon].Components[(WeaponComponent)component].Active = true;
+        }
+
+        public void removePlayerWeaponComponent(int weapon, int component)
+        {
+            Game.Player.Character.Weapons[(GTA.WeaponHash)weapon].Components[(WeaponComponent)component].Active = false;
+        }
+
+        public bool hasPlayerWeaponComponent(int weapon, int component)
+        {
+            return Game.Player.Character.Weapons[(GTA.WeaponHash)weapon].Components[(WeaponComponent)component].Active;
+        }
+        /*
+        public void givePlayerWeaponComponent(int weapon, int component)
+        {
+            Game.Player.Character.Weapons[(GTA.WeaponHash)weapon].SetComponent((WeaponComponent)component, true);
         }
 
         public void removePlayerWeaponComponent(int weapon, int component)
@@ -2414,9 +2430,9 @@ namespace GTANetwork.Javascript
 
         public bool hasPlayerWeaponComponent(int weapon, int component)
         {
-            return Game.Player.Character.Weapons[(GTA.WeaponHash) weapon].IsComponentActive((WeaponComponent) component);
+            return Game.Player.Character.Weapons[(GTA.WeaponHash)weapon].Components((WeaponComponent)component);
         }
-
+        */
         public WeaponComponent[] getAllWeaponComponents(WeaponHash weapon)
         {
             switch (weapon)
@@ -3615,7 +3631,7 @@ namespace GTANetwork.Javascript
             }
 
             //Function.Call(Hash._SET_TEXT_ENTRY, "CELL_EMAIL_BCON");
-            Function.Call(Hash._SET_TEXT_ENTRY, new InputArgument(Main.StringCache.GetCached("CELL_EMAIL_BCON")));
+            Function.Call(Hash._SET_NOTIFICATION_TEXT_ENTRY, new InputArgument(Main.StringCache.GetCached("CELL_EMAIL_BCON")));
             //NativeUI.UIResText.AddLongString(caption);
 
             const int maxStringLength = 99;
@@ -3629,7 +3645,7 @@ namespace GTANetwork.Javascript
                 Function.Call((Hash)0x6C188BE134E074AA, caption.Substring(i, System.Math.Min(maxStringLength, caption.Length - i)));
             }
 
-            Function.Call(Hash._DRAW_TEXT, x, y);
+            Function.Call(Hash.END_TEXT_COMMAND_DISPLAY_TEXT, x, y);
         }
 
         public UIResText addTextElement(string caption, double x, double y, double scale, int r, int g, int b, int a, int font, int alignment)
@@ -4162,12 +4178,12 @@ namespace GTANetwork.Javascript
 
         public bool isDisabledControlJustReleased(int control)
         {
-            return Game.IsDisabledControlJustReleased((GTA.Control)control);
+            return Game.IsEnabledControlJustPressed((GTA.Control)control);
         }
 
         public bool isDisabledControlJustPressed(int control)
         {
-            return Game.IsDisabledControlJustPressed((GTA.Control)control);
+            return Game.IsEnabledControlJustPressed((GTA.Control)control);
         }
 
         public bool isDisabledControlPressed(int control)
@@ -4317,19 +4333,19 @@ namespace GTANetwork.Javascript
 
         public void setTime(double hours, double minutes)
         {
-            World.CurrentDayTime = new TimeSpan((int) hours, (int) minutes, 00);
+            World.CurrentTimeOfDay = new TimeSpan((int) hours, (int) minutes, 00);
         }
 
         public TimeSpan getTime()
         {
-            return World.CurrentDayTime;
+            return World.CurrentTimeOfDay;
         }
         
         public void resetTime()
         {
             if (Main.Time != null)
             {
-                World.CurrentDayTime = Main.Time.Value;
+                World.CurrentTimeOfDay = Main.Time.Value;
             }
         }
 

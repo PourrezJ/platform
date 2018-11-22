@@ -7,7 +7,7 @@ namespace GTANetwork.GUI.DirectXHook
     public class SwapchainHooker : Script
     {
         public SwapchainHooker()
-        {
+        {/*
             if (CefUtil.DISABLE_CEF) return;
 
             var hooked = false;
@@ -24,7 +24,7 @@ namespace GTANetwork.GUI.DirectXHook
                     base.AttachD3DHook();
                     hooked = true;
                 }
-            };
+            };*/
         }
     }
 }

@@ -79,26 +79,28 @@ namespace GTANetwork.Javascript
 
                 if (cam.EntityAttached != 0)
                 {
-                    if (cam.BoneAttached != 0)
+                    /*if (cam.BoneAttached != 0)
                     {
                         cam.CamObj.AttachTo(new Ped(cam.EntityAttached), cam.BoneAttached, cam.AttachOffset.ToVector());
                     }
                     else
                     {
                         cam.CamObj.AttachTo(new Prop(cam.EntityAttached), cam.AttachOffset.ToVector());
-                    }
+                    }*/
+                    cam.CamObj.AttachTo(new Prop(cam.EntityAttached), cam.AttachOffset.ToVector());
                 }
 
                 if (cam.EntityPointing != 0)
                 {
-                    if (cam.BonePointing != 0)
+                    /*if (cam.BonePointing != 0)
                     {
                         cam.CamObj.PointAt(new Ped(cam.EntityPointing), cam.BonePointing, cam.PointOffset.ToVector());
                     }
                     else
                     {
                         cam.CamObj.PointAt(new Prop(cam.EntityPointing), cam.PointOffset.ToVector());
-                    }
+                    }*/
+                    cam.CamObj.PointAt(new Prop(cam.EntityPointing), cam.PointOffset.ToVector());
                 }
                 else if (cam.VectorPointing != null)
                 {
@@ -138,26 +140,28 @@ namespace GTANetwork.Javascript
 
                 if (cam.EntityAttached != 0)
                 {
-                    if (cam.BoneAttached != 0)
+                    /*if (cam.BoneAttached != 0)
                     {
                         cam.CamObj.AttachTo(new Ped(cam.EntityAttached), cam.BoneAttached, cam.AttachOffset.ToVector());
                     }
                     else
                     {
                         cam.CamObj.AttachTo(new Prop(cam.EntityAttached), cam.AttachOffset.ToVector());
-                    }
+                    }*/
+                    cam.CamObj.AttachTo(new Prop(cam.EntityAttached), cam.AttachOffset.ToVector());
                 }
 
                 if (cam.EntityPointing != 0)
                 {
-                    if (cam.BonePointing != 0)
+                    /*if (cam.BonePointing != 0)
                     {
                         cam.CamObj.PointAt(new Ped(cam.EntityPointing), cam.BonePointing, cam.PointOffset.ToVector());
                     }
                     else
                     {
                         cam.CamObj.PointAt(new Prop(cam.EntityPointing), cam.PointOffset.ToVector());
-                    }
+                    }*/
+                    cam.CamObj.PointAt(new Prop(cam.EntityPointing), cam.PointOffset.ToVector());
                 }
                 else if (cam.VectorPointing != null)
                 {
@@ -170,7 +174,7 @@ namespace GTANetwork.Javascript
                 }
             }
 
-            _activeCamera.CamObj.InterpTo(cam.CamObj, duration, easePos, easeRot);
+            _activeCamera.CamObj.InterpTo(cam.CamObj, duration, (easePos) ? 1 : 0, (easeRot) ? 1 : 0);
 
             cam.Active = true;
             _activeCamera.Active = false;
@@ -199,14 +203,12 @@ namespace GTANetwork.Javascript
         internal bool Active { get; set; }
 
         internal Camera CamObj { get; set; }
-        
+
         internal void Dispose()
         {
-            if (CamObj != null)
-            {
-                CamObj.Delete();
-                CamObj = null;
-            }
+            if (CamObj == null) return;
+            CamObj.Delete();
+            CamObj = null;
         }
     }
 }

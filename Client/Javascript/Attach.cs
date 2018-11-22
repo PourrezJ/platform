@@ -3,6 +3,7 @@ using GTA.Native;
 using GTANetwork.Util;
 using GTANetworkShared;
 using System;
+using EntityType = GTANetworkShared.EntityType;
 
 namespace GTANetwork.Streamer
 {
@@ -38,7 +39,7 @@ namespace GTANetwork.Streamer
                 }
                 else
                 {
-                    bone = new Prop(handleTarget.Handle).GetBoneIndex(info.Bone);
+                    bone = new Prop(handleTarget.Handle).Bones[info.Bone];
                 }
             }
 

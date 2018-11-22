@@ -1,5 +1,6 @@
 ﻿using GTA;
 using GTA.Math;
+using VehicleHash = GTA.VehicleHash;
 
 namespace GTANetwork.Misc
 {

@@ -60,7 +60,7 @@ namespace GTANetwork.GUI
             scaleform.CallFunction("DRAW_INSTRUCTIONAL_BUTTONS", -1);
             scaleform.Render2D();
 
-            if (Game.IsDisabledControlJustPressed(Control.FrontendAccept))
+            if (Game.IsEnabledControlJustPressed(Control.FrontendAccept))
             {
                 OnAccept?.Invoke();
             }

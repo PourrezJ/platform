@@ -386,7 +386,7 @@ namespace GTANetwork.Sync
             }
             else if (!meleeSwingDone && CurrentWeapon == unchecked((int)WeaponHash.Unarmed))
             {
-                var rightfist = Character.GetBonePosition((int)Bone.IK_R_Hand);
+                var rightfist = Character.GetBoneCoord(Bone.IK_R_Hand);
                 var start = rightfist - new Vector3(0, 0, 0.5f);
                 var end = rightfist + new Vector3(0, 0, 0.5f);
                 var ray = World.RaycastCapsule(start, end, (int)Math.Abs(end.X - start.X), IntersectOptions.Peds1, Character);
@@ -795,8 +795,7 @@ namespace GTANetwork.Sync
                 _parachuteProp.IsPositionFrozen = true;
                 Function.Call(Hash.SET_ENTITY_COLLISION, _parachuteProp.Handle, false, 0);
 
-                _parachuteProp.AttachTo(Character, Character.GetBoneIndex(Bone.SKEL_Spine2), new Vector3(3.6f, 0, 0f), new Vector3(0, 90, 0));
-
+                _parachuteProp.AttachTo(Character.Bones[Bone.SKEL_Spine2], new Vector3(3.6f, 0, 0f), new Vector3(0, 90, 0));
                 Character.Task.ClearAllImmediately();
                 Character.Task.ClearSecondary();
             }
@@ -885,7 +884,8 @@ namespace GTANetwork.Sync
                     {
                         var nrange = range * 2;
                         if (nrange > 1.0f) nrange = 1.0f;
-                        Character.Task.GoTo(predictPosition, true);
+                        //Character.Task.GoTo(predictPosition, true);
+                        Character.Task.GoTo(predictPosition);
                         Function.Call(Hash.SET_PED_DESIRED_MOVE_BLEND_RATIO, Character, nrange);
                     }
                     _lastMoving = true;

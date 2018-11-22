@@ -12,6 +12,7 @@ using GTANetwork.Util;
 using GTANetwork.Sync;
 using GTANetworkShared;
 using NativeUI;
+using EntityType = GTANetworkShared.EntityType;
 using Quaternion = GTANetworkShared.Quaternion;
 using Vector3 = GTA.Math.Vector3;
 using VehicleHash = GTA.VehicleHash;
@@ -1991,7 +1992,7 @@ namespace GTANetwork.Streamer
             if ((object) data?.Position == null || (object)data.Rotation == null) return;
 
             Util.Util.LoadPtfxAsset(data.Library);
-            Function.Call(Hash._SET_PTFX_ASSET_NEXT_CALL, data.Library);
+            Function.Call(Hash._USE_PARTICLE_FX_ASSET_NEXT_CALL, data.Library);
 
             int handle;
 
