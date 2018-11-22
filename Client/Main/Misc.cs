@@ -437,22 +437,22 @@ namespace GTANetwork
 
         public static void LoadingPromptText(string text)
         {
-            Function.Call((Hash)0xABA17D7CE615ADBF, "STRING"); //_SET_LOADING_PROMPT_TEXT_ENTRY
-            Function.Call((Hash)0x6C188BE134E074AA, text); //ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME
-            Function.Call((Hash)0x10D373323E5B9C0D); //_REMOVE_LOADING_PROMPT
-            Function.Call((Hash)0xBD12F8228410D9B4, 4); //_SHOW_LOADING_PROMPT
+            Function.Call(Hash._SET_LOADING_PROMPT_TEXT_ENTRY, "STRING"); //_SET_LOADING_PROMPT_TEXT_ENTRY
+            Function.Call(Hash.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME, text); //ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME
+            Function.Call(Hash._REMOVE_LOADING_PROMPT); //_REMOVE_LOADING_PROMPT
+            Function.Call(Hash._SHOW_LOADING_PROMPT, 4); //_SHOW_LOADING_PROMPT
         }
 
         public static void ShowLoadingPrompt(string text)
         {
-            Function.Call((Hash)0xABA17D7CE615ADBF, "STRING"); //_SET_LOADING_PROMPT_TEXT_ENTRY
-            Function.Call((Hash)0x6C188BE134E074AA, text); //ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME
-            Function.Call((Hash)0xBD12F8228410D9B4, 4); //_SHOW_LOADING_PROMPT
+            Function.Call(Hash._SET_LOADING_PROMPT_TEXT_ENTRY, "STRING"); //_SET_LOADING_PROMPT_TEXT_ENTRY
+            Function.Call(Hash.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME, text); //ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME
+            Function.Call(Hash._SHOW_LOADING_PROMPT, 4); //_SHOW_LOADING_PROMPT
         }
 
         public static void StopLoadingPrompt()
         {
-            Function.Call((Hash)0x10D373323E5B9C0D); //_REMOVE_LOADING_PROMPT
+            Function.Call(Hash._REMOVE_LOADING_PROMPT); //_REMOVE_LOADING_PROMPT
         }
 
         #region Serialization

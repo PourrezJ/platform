@@ -1790,7 +1790,7 @@ namespace GTANetwork.Streamer
             Function.Call(Hash.SET_ENTITY_LOAD_COLLISION_FLAG, veh, true);
             Function.Call(Hash.TRACK_VEHICLE_VISIBILITY, veh);
             Function.Call(Hash.SET_SIREN_WITH_NO_DRIVER, veh, true);
-            Function.Call((Hash)0x068F64F2470F9656, false);
+            Function.Call(Hash._SET_VEHICLE_CREATES_MONEY_PICKUPS_WHEN_EXPLODED, false);
 
             if ((data.PrimaryColor & 0xFF000000) > 0)
             {

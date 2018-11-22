@@ -1521,7 +1521,7 @@ namespace GTANetwork.Javascript
         {
             Util.Util.LoadPtfxAsset(ptfxLibrary);
             Function.Call(Hash._USE_PARTICLE_FX_ASSET_NEXT_CALL, ptfxLibrary);
-            Function.Call((Hash) 0x25129531F77B9ED3, ptfxName, position.X, position.Y, position.Z, rotation.X,
+            Function.Call(Hash.START_PARTICLE_FX_NON_LOOPED_AT_COORD, ptfxName, position.X, position.Y, position.Z, rotation.X,
                 rotation.Y, rotation.Z,
                 (float)scale, 0, 0, 0);
         }
@@ -1533,13 +1533,13 @@ namespace GTANetwork.Javascript
 
             if (boneIndex <= 0)
             {
-                Function.Call((Hash) 0x0D53A3B8DA0809D2, ptfxName, entity.Value, offset.X, offset.Y, offset.Z,
+                Function.Call(Hash.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY, ptfxName, entity.Value, offset.X, offset.Y, offset.Z,
                     rotation.X, rotation.Y, rotation.Z,
                     (float)scale, 0, 0, 0);
             }
             else
             {
-                Function.Call((Hash)0x0E7E72961BA18619, ptfxName, entity.Value, offset.X, offset.Y, offset.Z,
+                Function.Call(Hash.START_PARTICLE_FX_NON_LOOPED_ON_PED_BONE, ptfxName, entity.Value, offset.X, offset.Y, offset.Z,
                     rotation.X, rotation.Y, rotation.Z,
                     boneIndex, scale, 0, 0, 0);
             }
@@ -1547,13 +1547,13 @@ namespace GTANetwork.Javascript
 
         public void createExplosion(int explosionType, Vector3 position, double damageScale)
         {
-            Function.Call((Hash) 0xE3AD2BDBAEE269AC, position.X, position.Y, position.Z, explosionType, (float)damageScale,
+            Function.Call(Hash.ADD_EXPLOSION, position.X, position.Y, position.Z, explosionType, (float)damageScale,
                 true, false);
         }
 
         public void createOwnedExplosion(LocalHandle owner, int explosionType, Vector3 position, double damageScale)
         {
-            Function.Call((Hash)0x172AA1B624FA1013, owner.Value, position.X, position.Y, position.Z, explosionType, (float)damageScale, true, false, 1f);
+            Function.Call(Hash.ADD_OWNED_EXPLOSION, owner.Value, position.X, position.Y, position.Z, explosionType, (float)damageScale, true, false, 1f);
         }
 
         public void createProjectile(int weapon, Vector3 start, Vector3 target, int damage, double speed = -1, int dimension = 0)
@@ -1596,7 +1596,7 @@ namespace GTANetwork.Javascript
                 prop.Flag = (byte)PacketOptimization.ResetBit(prop.Flag, EntityFlag.VehicleLocked);
             }
 
-            Function.Call((Hash)0xB664292EAECF7FA6, vehicle.Value, locked ? 2 : 1);
+            Function.Call(Hash.SET_VEHICLE_DOORS_LOCKED, vehicle.Value, locked ? 2 : 1);
         }
 
         public bool getVehicleLocked(LocalHandle vehicle)
@@ -1925,7 +1925,7 @@ namespace GTANetwork.Javascript
                 veh.Mods?.Remove((byte) slot);
 
                 if (veh.StreamedIn)
-                    Function.Call((Hash)0x92D619E420858204, vehicle.Value, slot);
+                    Function.Call(Hash.REMOVE_VEHICLE_MOD, vehicle.Value, slot);
             }
         }
 
@@ -2103,22 +2103,22 @@ namespace GTANetwork.Javascript
 
         public float getVehicleMaxSpeed(int model)
         {
-            return Function.Call<float>((Hash)0xF417C2502FFFED43, model);
+            return Function.Call<float>(Hash._GET_VEHICLE_MAX_SPEED, model);
         }
 
         public float getVehicleMaxBraking(int model)
         {
-            return Function.Call<float>((Hash)0xDC53FD41B4ED944C, model);
+            return Function.Call<float>(Hash.GET_VEHICLE_MODEL_MAX_BRAKING, model);
         }
 
         public float getVehicleMaxTraction(int model)
         {
-            return Function.Call<float>((Hash)0x539DE94D44FDFD0D, model);
+            return Function.Call<float>(Hash.GET_VEHICLE_MAX_TRACTION, model);
         }
 
         public float getVehicleMaxAcceleration(int model)
         {
-            return Function.Call<float>((Hash)0x8C044C5C84505B6A, model);
+            return Function.Call<float>(Hash.GET_VEHICLE_MODEL_ACCELERATION, model);
         }
 
         public float getVehicleMaxOccupants(int model)
@@ -2133,7 +2133,7 @@ namespace GTANetwork.Javascript
 
         public void detonatePlayerStickies()
         {
-            Function.Call((Hash)0xFC4BD125DE7611E4, Game.Player.Character, (int)WeaponHash.StickyBomb, true);
+            Function.Call(Hash.EXPLODE_PROJECTILES, Game.Player.Character, (int)WeaponHash.StickyBomb, true);
         }
 
         public void setPlayerNametag(LocalHandle player, string text)
@@ -2185,7 +2185,7 @@ namespace GTANetwork.Javascript
 
         public void setPlayerDefaultClothes()
         {
-            Function.Call((Hash)0x45EEE61580806D63, Game.Player.Character);
+            Function.Call(Hash.SET_PED_DEFAULT_COMPONENT_VARIATION, Game.Player.Character);
         }
 
         public void setPlayerTeam(int team)
@@ -2301,7 +2301,7 @@ namespace GTANetwork.Javascript
         {
             var pl = player.Properties<RemotePlayer>();
 
-            Function.Call((Hash)0x262B14F48D29DE80, player.Value, slot, drawable, texture, 2);
+            Function.Call(Hash.SET_PED_COMPONENT_VARIATION, player.Value, slot, drawable, texture, 2);
 
             if (pl.Textures == null) pl.Textures = new Dictionary<byte, byte>();
             if (pl.Props == null) pl.Props = new Dictionary<byte, byte>();
@@ -2314,7 +2314,7 @@ namespace GTANetwork.Javascript
         {
             var pl = player.Properties<RemotePlayer>();
 
-            Function.Call((Hash)0x93376B65A266EB5F, player.Value, slot, drawable, texture, true);
+            Function.Call(Hash.SET_PED_PROP_INDEX, player.Value, slot, drawable, texture, true);
 
             if (pl.Accessories == null) pl.Accessories = new Dictionary<byte, Tuple<byte, byte>>();
 
@@ -2325,7 +2325,7 @@ namespace GTANetwork.Javascript
         {
             var pl = player.Properties<RemotePlayer>();
 
-            Function.Call((Hash)0x0943E5B8E078E76E, player.Value, slot);
+            Function.Call(Hash.CLEAR_PED_PROP, player.Value, slot);
 
             pl.Accessories?.Remove((byte) slot);
         }
@@ -2354,7 +2354,7 @@ namespace GTANetwork.Javascript
         {
             int interior;
             if ((interior = Function.Call<int>(Hash.GET_INTERIOR_AT_COORDS, pos.X, pos.Y, pos.Z)) == 0) return;
-            Function.Call((Hash)0x2CA429C029CCF247, interior); // LOAD_INTERIOR
+            Function.Call(Hash._LOAD_INTERIOR, interior); // LOAD_INTERIOR
             Function.Call(Hash.SET_INTERIOR_ACTIVE, interior, true);
             Function.Call(Hash.DISABLE_INTERIOR, interior, false);
             if (Function.Call<bool>(Hash.IS_INTERIOR_CAPPED, interior)) Function.Call(Hash.CAP_INTERIOR, interior, false);
@@ -2392,7 +2392,7 @@ namespace GTANetwork.Javascript
         public void setPlayerWeaponTint(int weapon, int tint)
         {
             Ped PlayerChar = Game.Player.Character;
-            Function.Call((Hash)0x50969B9B89ED5738, PlayerChar, weapon, tint);
+            Function.Call(Hash.SET_PED_WEAPON_TINT_INDEX, PlayerChar, weapon, tint);
             ((RemotePlayer) Main.NetEntityHandler.NetToStreamedItem(PlayerChar.Handle, useGameHandle: true))
                 .WeaponTints[weapon] = (byte) tint;
         }
@@ -2792,8 +2792,8 @@ namespace GTANetwork.Javascript
         public void playSoundFrontEnd(string soundName, string soundSetName)
         {
             if (!SoundWhitelist.IsAllowed(soundName) || !SoundWhitelist.IsAllowed(soundSetName)) return;
-            Function.Call((Hash)0x2F844A8B08D76685, soundSetName, true);
-            Function.Call((Hash)0x67C540AA08E4A6F5, -1, soundName, soundSetName);
+            Function.Call(Hash.REQUEST_SCRIPT_AUDIO_BANK, soundSetName, true);
+            Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, soundName, soundSetName);
         }
 
         //public void playSoundFromEntity(LocalHandle entity, string soundName, string soundSetName)
@@ -2936,7 +2936,7 @@ namespace GTANetwork.Javascript
 
         public int getPlayerWantedLevel()
         {
-            return Function.Call<int>((Hash)0x4C9296CBCD1B971E);
+            return Function.Call<int>(Hash.GET_FAKE_WANTED_LEVEL);
         }
 
         public bool getPlayerInvincible()
@@ -3295,7 +3295,7 @@ namespace GTANetwork.Javascript
         public void setBlipTransparency(LocalHandle blip, int alpha)
         {
             blip.Properties<RemoteBlip>().Alpha = (byte)alpha;
-            Function.Call((Hash)0x45FF974EEE1C8734, blip.Value, alpha);
+            Function.Call(Hash.SET_BLIP_ALPHA, blip.Value, alpha);
         }
 
         public int getBlipTransparency(LocalHandle blip)
@@ -3642,7 +3642,7 @@ namespace GTANetwork.Javascript
                 //    new InputArgument(
                 //        Main.StringCache.GetCached(caption.Substring(i,
                 //            System.Math.Min(maxStringLength, caption.Length - i)))));
-                Function.Call((Hash)0x6C188BE134E074AA, caption.Substring(i, System.Math.Min(maxStringLength, caption.Length - i)));
+                Function.Call(Hash.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME, caption.Substring(i, System.Math.Min(maxStringLength, caption.Length - i)));
             }
 
             Function.Call(Hash.END_TEXT_COMMAND_DISPLAY_TEXT, x, y);

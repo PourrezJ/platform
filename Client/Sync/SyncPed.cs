@@ -348,9 +348,9 @@ namespace GTANetwork.Sync
 
         internal void SetBlipNameFromTextFile(Blip blip, string text)
         {
-            Function.Call((Hash)0xF9113A30DE5C6670, "STRING");
-            Function.Call((Hash)0x6C188BE134E074AA, text); //_ADD_TEXT_COMPONENT_STRING
-            Function.Call((Hash)0xBC38B49BCB83BC9B, blip);
+            Function.Call(Hash.BEGIN_TEXT_COMMAND_SET_BLIP_NAME, "STRING");
+            Function.Call(Hash.ADD_TEXT_COMPONENT_SUBSTRING_BLIP_NAME, text); //_ADD_TEXT_COMPONENT_STRING
+            Function.Call(Hash.END_TEXT_COMMAND_SET_BLIP_NAME, blip);
         }
 
         private int _modSwitch = 0;

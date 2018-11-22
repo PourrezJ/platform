@@ -309,7 +309,7 @@ namespace GTANetwork
                 int interior;
                 if ((interior = Function.Call<int>(Hash.GET_INTERIOR_AT_COORDS, x, y, z)) != 0)
                 {
-                    Function.Call((Hash)0x2CA429C029CCF247, interior); // LOAD_INTERIOR
+                    Function.Call(Hash._LOAD_INTERIOR, interior); // LOAD_INTERIOR
                     Function.Call(Hash.SET_INTERIOR_ACTIVE, interior, true);
                     Function.Call(Hash.DISABLE_INTERIOR, interior, false);
                     if (Function.Call<bool>(Hash.IS_INTERIOR_CAPPED, interior))
@@ -527,42 +527,40 @@ namespace GTANetwork
             {
                 default:
                     return Enums.NativeType.Unknown;
-                case 0x00A1CADD00108836:
+                case (ulong)Hash.SET_PLAYER_MODEL:
                     return Enums.NativeType.NeedsModel2 | Enums.NativeType.Unknown | Enums.NativeType.NeedsModel | Enums.NativeType.PlayerSkinChange;
-                case 0xD49F9B0955C367DE:
+                case (ulong)Hash.CREATE_PED:
                     return Enums.NativeType.NeedsModel2 | Enums.NativeType.NeedsModel | Enums.NativeType.ReturnsEntity;
-                case 0x7DD959874C1FD534:
+                case (ulong)Hash.CREATE_PED_INSIDE_VEHICLE:
                     return Enums.NativeType.NeedsModel3 | Enums.NativeType.NeedsModel | Enums.NativeType.ReturnsEntity;
-                case 0xAF35D0D2583051B0:
-                case 0x509D5878EB39E842:
-                case 0x9A294B2138ABB884:
+                case (ulong)Hash.CREATE_VEHICLE:
+                case (ulong)Hash.CREATE_OBJECT:
+                case (ulong)Hash.CREATE_OBJECT_NO_OFFSET:
                     return Enums.NativeType.NeedsModel1 | Enums.NativeType.NeedsModel | Enums.NativeType.ReturnsEntity;
-                case 0xEF29A16337FACADB:
-                case 0xB4AC7D0CF06BFE8F:
-                case 0x9B62392B474F44A0:
-                case 0x63C6CCA8E68AE8C8:
+                case (ulong)Hash.CLONE_PED:
+                case (ulong)Hash.CREATE_RANDOM_PED:
+                case (ulong)Hash.CREATE_RANDOM_PED_AS_DRIVER:
+                case (ulong)Hash.CREATE_MISSION_TRAIN:
                     return Enums.NativeType.ReturnsEntity;
-                case 0x46818D79B1F7499A:
-                case 0x5CDE92C702A8FCE7:
-                case 0xBE339365C863BD36:
-                case 0x5A039BB0BCA604B6:
+                case (ulong)Hash.ADD_BLIP_FOR_RADIUS:
+                case (ulong)Hash.ADD_BLIP_FOR_ENTITY:
+                case (ulong)Hash.ADD_BLIP_FOR_PICKUP:
+                case (ulong)Hash.ADD_BLIP_FOR_COORD:
                     return Enums.NativeType.ReturnsBlip;
-                case 0x47C3B5848C3E45D8:
+                case (ulong)Hash.SET_CLOCK_TIME:
                     return Enums.NativeType.TimeSet;
-                case 0xED712CA327900C8A:
+                case (ulong)Hash.SET_WEATHER_TYPE_NOW_PERSIST:
                     return Enums.NativeType.WeatherSet;
-                case 0xF75B0D629E1C063D:
+                case (ulong)Hash.SET_PED_INTO_VEHICLE:
                     return Enums.NativeType.VehicleWarp;
-                case 0x239A3351AC1DA385:
+                case (ulong)Hash.SET_ENTITY_COORDS_NO_OFFSET:
                     return Enums.NativeType.EntityWarp;
-                case 0xEA47FE3719165B94:
+                case (ulong)Hash.TASK_PLAY_ANIM:
                     return Enums.NativeType.NeedsAnimDict;
-                case 0x25129531F77B9ED3:
-                case 0x0E7E72961BA18619:
-                case 0xF56B8137DF10135D:
-                case 0xA41B6A43642AC2CF:
-                case 0x0D53A3B8DA0809D2:
-                case 0xC95EB1DB6E92113D:
+                case (ulong)Hash.START_PARTICLE_FX_LOOPED_AT_COORD:
+                case (ulong)Hash.START_PARTICLE_FX_LOOPED_ON_PED_BONE:
+                case (ulong)Hash.START_PARTICLE_FX_NON_LOOPED_AT_COORD:
+                case (ulong)Hash.START_PARTICLE_FX_LOOPED_ON_ENTITY:
                     return Enums.NativeType.PtfxAssetRequest;
             }
         }

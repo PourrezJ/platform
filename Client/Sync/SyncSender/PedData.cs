@@ -62,7 +62,7 @@ namespace GTANetwork.Streamer
                 obj.Flag |= (int)PedDataFlags.ParachuteOpen;
             if (player.IsInCover())
                 obj.Flag |= (int)PedDataFlags.IsInCover;
-            if (!Function.Call<bool>((Hash)0x6A03BF943D767C93, player))
+            if (!Function.Call<bool>(Hash._IS_PED_STANDING_IN_COVER, player))
                 obj.Flag |= (int)PedDataFlags.IsInLowerCover;
             if (player.IsInCoverFacingLeft)
                 obj.Flag |= (int)PedDataFlags.IsInCoverFacingLeft;

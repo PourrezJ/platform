@@ -548,32 +548,40 @@ namespace GTA
 			/// <param name="value">The new value to assign to the <see cref="GlobalVariable"/>.</param>
 			public unsafe void Write<T>(T value)
 			{
-				if (typeof(T) == typeof(string))
-				{
-					throw new InvalidOperationException("Cannot write string values via 'Write<string>', use 'WriteString' instead.");
-				}
+                try
+                {
+                    if (typeof(T) == typeof(string))
+                    {
+                        throw new InvalidOperationException("Cannot write string values via 'Write<string>', use 'WriteString' instead.");
+                    }
 
-				if (typeof(T) == typeof(Math.Vector2))
-				{
-					var val = (Math.Vector2)(object)value;
-					var data = (float*)(MemoryAddress.ToPointer());
+                    if (typeof(T) == typeof(Math.Vector2))
+                    {
+                        var val = (Math.Vector2)(object)value;
+                        var data = (float*)(MemoryAddress.ToPointer());
 
-					data[0] = val.X;
-					data[2] = val.Y;
-					return;
-				}
-				if (typeof(T) == typeof(Math.Vector3))
-				{
-					var val = (Math.Vector3)(object)(value);
-					var data = (float*)(MemoryAddress.ToPointer());
+                        data[0] = val.X;
+                        data[2] = val.Y;
+                        return;
+                    }
+                    if (typeof(T) == typeof(Math.Vector3))
+                    {
+                        var val = (Math.Vector3)(object)(value);
+                        var data = (float*)(MemoryAddress.ToPointer());
 
-					data[0] = val.X;
-					data[2] = val.Y;
-					data[4] = val.Z;
-					return;
-				}
+                        data[0] = val.X;
+                        data[2] = val.Y;
+                        data[4] = val.Z;
+                        return;
+                    }
 
-				*(ulong*)(MemoryAddress.ToPointer()) = Function.ObjectToNative(value);
+                    *(ulong*)(MemoryAddress.ToPointer()) = Function.ObjectToNative(value);
+                }
+                catch(Exception ex)
+                {
+                    Console.Error(ex.Message);
+                }
+
 			}
 			/// <summary>
 			/// Set the value stored in the <see cref="GlobalVariable"/> to a string.

@@ -56,7 +56,7 @@ namespace GTANetwork.GUI
             scaleform.CallFunction("TOGGLE_MOUSE_BUTTONS", 0);
             scaleform.CallFunction("CREATE_CONTAINER");
 
-            scaleform.CallFunction("SET_DATA_SLOT", 0, Function.Call<string>((Hash)0x0499D7B09FC9B407, 2, (int)Control.FrontendAccept, 0), "Accept");
+            scaleform.CallFunction("SET_DATA_SLOT", 0, Function.Call<string>(Hash.GET_CONTROL_INSTRUCTIONAL_BUTTON, 2, (int)Control.FrontendAccept, 0), "Accept");
             scaleform.CallFunction("DRAW_INSTRUCTIONAL_BUTTONS", -1);
             scaleform.Render2D();
 

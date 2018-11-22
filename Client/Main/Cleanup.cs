@@ -64,7 +64,7 @@ namespace GTANetwork
                     thisCol.Call(Hash.SUPPRESS_AGITATION_EVENTS_NEXT_FRAME);
 
                     thisCol.Call(Hash.SET_FAR_DRAW_VEHICLES, false);
-                    thisCol.Call((Hash)0xF796359A959DF65D, false); // _DISPLAY_DISTANT_VEHICLES
+                    thisCol.Call(Hash._DISPLAY_DISTANT_VEHICLES, false); // _DISPLAY_DISTANT_VEHICLES
                     thisCol.Call(Hash.SET_ALL_LOW_PRIORITY_VEHICLE_GENERATORS_ACTIVE, false);
 
                     thisCol.Call(Hash.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, 0f);
@@ -87,13 +87,13 @@ namespace GTANetwork
                 //Function.Call(Hash.SET_RANDOM_EVENT_FLAG, 0);
 
                 thisCol.Call(Hash.DESTROY_MOBILE_PHONE);
-                thisCol.Call((Hash) 0x015C49A93E3E086E, true); //_DISABLE_PHONE_THIS_FRAME
+                thisCol.Call(Hash._DISABLE_PHONE_THIS_FRAME, true); //_DISABLE_PHONE_THIS_FRAME
                 thisCol.Call(Hash.DISPLAY_CASH, false);
 
                 thisCol.Call(Hash.SET_AUTO_GIVE_PARACHUTE_WHEN_ENTER_PLANE, Game.Player, false);
 
                 thisCol.Call(Hash.HIDE_HELP_TEXT_THIS_FRAME);
-                thisCol.Call((Hash) 0x5DB660B38DD98A31, Game.Player, 0f); //SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER
+                thisCol.Call(Hash.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER, Game.Player, 0f); //SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER
 
                 thisCol.Call(Hash.SET_PLAYER_WANTED_LEVEL, Game.Player, 0, false);
                 thisCol.Call(Hash.SET_PLAYER_WANTED_LEVEL_NOW, Game.Player, false);

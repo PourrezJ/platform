@@ -181,10 +181,12 @@ namespace GTANetwork.Util
                     Function.Call(Hash._SET_VEHICLE_NEON_LIGHTS_COLOUR, veh, (value & 0xFF0000) >> 16, (value & 0xFF00) >> 8, (value & 0xFF));
                     break;
                 case NonStandardVehicleMod.DashboardColor:
-                    Function.Call((Hash)6956317558672667244uL, veh, value);
+                    //Function.Call((Hash)6956317558672667244uL, veh, value);
+                    veh.Mods.DashboardColor = (VehicleColor)value;
                     break;
                 case NonStandardVehicleMod.TrimColor:
-                    Function.Call((Hash)17585947422526242585uL, veh, value);
+                    veh.Mods.TrimColor = (VehicleColor)value;
+                    //Function.Call((Hash)17585947422526242585uL, veh, value);
                     break;
             }
         }
@@ -614,7 +616,7 @@ namespace GTANetwork.Util
 
             for (int i = 0; i < caption.Length; i += maxStringLength)
             {
-                thisCol.Call((Hash)0x6C188BE134E074AA,
+                thisCol.Call(Hash.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME,
                     caption.Substring(i,
                             System.Math.Min(maxStringLength, caption.Length - i)));
                 //Function.Call((Hash)0x6C188BE134E074AA, caption.Substring(i, System.Math.Min(maxStringLength, caption.Length - i)));

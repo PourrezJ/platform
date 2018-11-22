@@ -303,10 +303,10 @@ namespace GTANetwork
             Audio.SetAudioFlag(AudioFlags.DisableFlightMusic, true);
             Audio.SetAudioFlag(AudioFlags.PoliceScannerDisabled, true);
             Audio.SetAudioFlag(AudioFlags.OnlyAllowScriptTriggerPoliceScanner, true);
-            Function.Call((Hash)0x552369F549563AD5, false); //_FORCE_AMBIENT_SIREN
+            Function.Call(Hash._FORCE_AMBIENT_SIREN, false); //_FORCE_AMBIENT_SIREN
 
             // disable fire dep dispatch service
-            Function.Call((Hash)0xDC0F817884CDD856, 4, false); // ENABLE_DISPATCH_SERVICE
+            Function.Call(Hash.ENABLE_DISPATCH_SERVICE, 4, false); // ENABLE_DISPATCH_SERVICE
 
             GlobalVariable.Get(2576573).Write(1); //Enable MP cars?
 

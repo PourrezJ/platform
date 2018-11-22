@@ -364,7 +364,7 @@ namespace GTANetwork.Sync
 
             if (!meleeSwingDone && CurrentWeapon != unchecked((int)WeaponHash.Unarmed))
             {
-                var gunEntity = Function.Call<Prop>((Hash)0x3B390A939AF0B5FC, Character);
+                var gunEntity = Function.Call<Prop>(Hash.GET_CURRENT_PED_WEAPON_ENTITY_INDEX, Character);
                 if (gunEntity != null)
                 {
                     gunEntity.Model.GetDimensions(out Vector3 min, out Vector3 max);
@@ -679,7 +679,7 @@ namespace GTANetwork.Sync
                 DisplayAimingAnimation();
             }
 
-            var gunEnt = Function.Call<Prop>((Hash)0x3B390A939AF0B5FC, Character);
+            var gunEnt = Function.Call<Prop>(Hash.GET_CURRENT_PED_WEAPON_ENTITY_INDEX, Character);
             if (gunEnt != null)
             {
                 //var start = gunEnt.GetOffsetInWorldCoords(new Vector3(0, 0, 0));
