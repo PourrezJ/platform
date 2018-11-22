@@ -85,20 +85,17 @@ namespace GTA
 		public ConsoleScript Console { get; private set; }
 		public Script[] RunningScripts => _runningScripts.ToArray();
 
+        private static readonly string LogPath = 
+            Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"..\\logs\\ScriptHookVDotNet-{DateTime.Now.ToString("yyyy-MM-dd")}.log");
+
+
 		public static ScriptDomain Load(string path)
 		{
-			if (!Path.IsPathRooted(path))
-			{
-				path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), path);
-			}
 			path = Path.GetFullPath(path);
 
-			// Clear log
-            
-            string logPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..\\logs\\ScriptHookVDotNet.log");
-            try
+			try
 			{
-				File.WriteAllText(logPath, string.Empty);
+				File.WriteAllText(LogPath, string.Empty);
 			}
 			catch
 			{
@@ -117,18 +114,16 @@ namespace GTA
             Log("[DEBUG]", "Location ", typeof(ScriptDomain).Assembly.Location);
             Log("[DEBUG]", "FullName ", typeof(ScriptDomain).FullName);
 
-
             ScriptDomain scriptdomain = null;
 
             try
             {
                 scriptdomain = (ScriptDomain)(appdomain.CreateInstanceFromAndUnwrap(typeof(ScriptDomain).Assembly.Location, typeof(ScriptDomain).FullName));
             }
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
                 try
                 {
-                    Log("[DEBUG]", "ERROR: Load with LOADFROM ", typeof(ScriptDomain).FullName);
                     var ourAssembly = Assembly.LoadFrom(typeof(ScriptDomain).Assembly.Location);
                     scriptdomain = (ScriptDomain)ourAssembly.CreateInstance(typeof(ScriptDomain).FullName);
                 }
@@ -140,9 +135,9 @@ namespace GTA
 
                     return null;
                 }
-			}
+            }
 
-			Log("[INFO]", "Loading scripts from '", path, "' ...");
+            Log("[INFO]", "Loading scripts from '", path, "' ...");
 
 			if (Directory.Exists(path))
 			{
@@ -287,8 +282,9 @@ namespace GTA
 
 			try
 			{
-				assembly = Assembly.Load(File.ReadAllBytes(filename));
-			}
+                //assembly = Assembly.Load(File.ReadAllBytes(filename));
+                assembly = Assembly.LoadFrom(filename);
+            }
 			catch (Exception ex)
 			{
 				Log("[ERROR]", "Failed to load assembly '", Path.GetFileName(filename), "':", Environment.NewLine, ex.ToString());
@@ -834,12 +830,10 @@ namespace GTA
 		static private void Log(string logLevel, params string[] message)
 		{
 			var datetime = DateTime.Now;
-            string logPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..\\logs\\ScriptHookVDotNet.log");
-            logPath = logPath.Insert(logPath.IndexOf(".log"), "-" + datetime.ToString("yyyy-MM-dd"));
 
             try
 			{
-				var fs = new FileStream(logPath, FileMode.Append, FileAccess.Write, FileShare.Read);
+				var fs = new FileStream(LogPath, FileMode.Append, FileAccess.Write, FileShare.Read);
 				var sw = new StreamWriter(fs);
 
 				try
@@ -935,5 +929,16 @@ namespace GTA
 				Log("[INFO]", "Please check the following site for support on the issue: ", supportURL);
 			}
 		}
-	}
+
+        // Loads the content of a file to a byte array. 
+        static byte[] loadFile(string filename)
+        {
+            FileStream fs = new FileStream(filename, FileMode.Open);
+            byte[] buffer = new byte[(int)fs.Length];
+            fs.Read(buffer, 0, buffer.Length);
+            fs.Close();
+
+            return buffer;
+        }
+    }
 }

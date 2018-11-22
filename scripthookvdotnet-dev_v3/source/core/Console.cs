@@ -855,7 +855,7 @@ namespace GTA
 		public static void ReloadAllScripts()
 		{
 			AbortAllScripts();
-			ScriptDomain.CurrentDomain.StartAllScripts();
+			//ScriptDomain.CurrentDomain.StartAllScripts();
 		}
 
 		[ConsoleCommand("List all loaded scripts")]
